@@ -1,6 +1,6 @@
 # 7SMetrics
 
-This is a repository that contains code written in python for calculating the key metrics used to validate segmentation results.
+Calculates the top seven metrics used to validate targeting results.
 
 ## Requirements
   * OpenCV-python == 4.1.1.26
