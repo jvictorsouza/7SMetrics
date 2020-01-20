@@ -5,7 +5,6 @@ warnings.filterwarnings('ignore')
 
 from numba import njit
 from numpy.core.umath_tests import inner1d
-from hausdorff import hausdorff_distance as hd
 
 @njit
 def confusion_matrix(segmented, ground_truth):
@@ -37,7 +36,6 @@ class Metricas(object):
     list_acc           = []
     list_pre           = []
     list_dsc           = []
-    # list_hd            = []
     list_jac           = []
     list_mcc           = []
     list_sen           = []
@@ -84,21 +82,9 @@ class Metricas(object):
         self.list_jac.append(tp/(fp + fn + tp))
         self.list_jac = np.array(self.list_jac)
 
-        # self.list_hd.append(self._hd(segmented, ground_truth))
-        # self.list_hd = np.array(self.list_hd)
-
         # self.list_tmp.append(self.tmp)
         # self.list_tmp = np.array(self.list_tmp)
 
-    # def _hd(self, A,B):
-    #
-    #     # Find pairwise distance
-    #     D_mat = np.sqrt(inner1d(A,A)[np.newaxis].T + inner1d(B,B)-2*(np.dot(A,B.T)))
-    #
-    #     # Find DH
-    #     dH = np.max(np.array([np.max(np.min(D_mat,axis=0)), np.max(np.min(D_mat,axis=1))]))
-    #
-    #     return(dH)/1000.0
 
     def save_metrics(self, num_imagem):
         if num_imagem == 1:
@@ -113,8 +99,6 @@ class Metricas(object):
         file.write('Matthews coefficient     = {:.4f}\n'.format(self.list_mcc[num_imagem-1]))
         file.write('Sensitivity coefficient  = {:.4f}\n'.format(self.list_sen[num_imagem-1]))
         file.write('Specifity coefficient    = {:.4f}\n'.format(self.list_spc[num_imagem-1]))
-        # file.write('Hausdorff distance       = {:.4f}\n\n'.format(self.list_hd[num_imagem-1]))
-        # file.write('Time                     = {:.4f}\n'.format(self.list_tmp[num_imagem-1]))
 
     def save_mean_metrics(self, n_img, exams):
         # self.array_list_metrics = (self.array_list_metrics) / self.qnt_imgs
@@ -129,6 +113,4 @@ class Metricas(object):
         file.write('Matthews coefficient     = {:.4f} +/- {:.4f}\n'.format(np.mean(self.list_mcc), np.std(self.list_mcc)))
         file.write('Sensitivity coefficient  = {:.4f} +/- {:.4f}\n'.format(np.mean(self.list_sen), np.std(self.list_sen)))
         file.write('Specifity coefficient    = {:.4f} +/- {:.4f}\n'.format(np.mean(self.list_spc), np.std(self.list_spc)))
-        # file.write('Hausdorff distance       = {:.4f} +/- {:.4f}\n'.format(np.mean(self.list_hd ), np.std(self.list_hd )))
-        # file.write('Time                     = {:.4f} +/- {:.4f}\n'.format(np.mean(self.list_tmp), np.std(self.list_tmp)))
         file.close()
